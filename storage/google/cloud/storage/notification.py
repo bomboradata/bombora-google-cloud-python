@@ -16,7 +16,7 @@
 
 import re
 
-from google.api.core.exceptions import NotFound
+from google.api_core.exceptions import NotFound
 
 
 OBJECT_FINALIZE_EVENT_TYPE = 'OBJECT_FINALIZE'
@@ -223,6 +223,9 @@ class BucketNotification(object):
         See:
         https://cloud.google.com/storage/docs/json_api/v1/notifications/insert
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client`
         :param client: (Optional) the client to use.  If not passed, falls back
                        to the ``client`` stored on the notification's bucket.
@@ -253,6 +256,9 @@ class BucketNotification(object):
 
         See:
         https://cloud.google.com/storage/docs/json_api/v1/notifications/get
+
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -289,6 +295,9 @@ class BucketNotification(object):
         See:
         https://cloud.google.com/storage/docs/json_api/v1/notifications/get
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -320,12 +329,15 @@ class BucketNotification(object):
         See:
         https://cloud.google.com/storage/docs/json_api/v1/notifications/delete
 
+        If :attr:`user_project` is set on the bucket, bills the API request
+        to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :raises: :class:`google.api.core.exceptions.NotFound`:
+        :raises: :class:`google.api_core.exceptions.NotFound`:
             if the notification does not exist.
         :raises ValueError: if the notification has no ID.
         """

@@ -21,7 +21,7 @@ import json
 
 import six
 
-from google.api.core import page_iterator
+from google.api_core import page_iterator
 from google.cloud._helpers import _datetime_to_rfc3339
 from google.cloud._helpers import _NOW
 from google.cloud._helpers import _rfc3339_to_datetime
@@ -42,7 +42,7 @@ from google.cloud.storage.notification import NONE_PAYLOAD_FORMAT
 def _blobs_page_start(iterator, page, response):
     """Grab prefixes after a :class:`~google.cloud.iterator.Page` started.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that is currently in use.
 
     :type page: :class:`~google.cloud.api.core.page_iterator.Page`
@@ -63,7 +63,7 @@ def _item_to_blob(iterator, item):
         This assumes that the ``bucket`` attribute has been
         added to the iterator after being created.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
@@ -86,7 +86,7 @@ def _item_to_notification(iterator, item):
         This assumes that the ``bucket`` attribute has been
         added to the iterator after being created.
 
-    :type iterator: :class:`~google.api.core.page_iterator.Iterator`
+    :type iterator: :class:`~google.api_core.page_iterator.Iterator`
     :param iterator: The iterator that has retrieved the item.
 
     :type item: dict
@@ -220,6 +220,8 @@ class Bucket(_PropertyMixin):
     def exists(self, client=None):
         """Determines whether or not this bucket exists.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -257,6 +259,8 @@ class Bucket(_PropertyMixin):
 
         This implements "storage.buckets.insert".
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -278,6 +282,8 @@ class Bucket(_PropertyMixin):
         """Sends all changed properties in a PATCH request.
 
         Updates the ``_properties`` with the response from the backend.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
@@ -334,6 +340,8 @@ class Bucket(_PropertyMixin):
           :start-after: [START get_blob]
           :end-before: [END get_blob]
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type blob_name: str
         :param blob_name: The name of the blob to retrieve.
 
@@ -385,6 +393,8 @@ class Bucket(_PropertyMixin):
                    projection='noAcl', fields=None, client=None):
         """Return an iterator used to find blobs in the bucket.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type max_results: int
         :param max_results: (Optional) Maximum number of blobs to return.
 
@@ -420,7 +430,7 @@ class Bucket(_PropertyMixin):
         :param client: (Optional) The client to use.  If not passed, falls back
                        to the ``client`` stored on the current bucket.
 
-        :rtype: :class:`~google.api.core.page_iterator.Iterator`
+        :rtype: :class:`~google.api_core.page_iterator.Iterator`
         :returns: Iterator of all :class:`~google.cloud.storage.blob.Blob`
                   in this bucket matching the arguments.
         """
@@ -462,6 +472,8 @@ class Bucket(_PropertyMixin):
         See:
         https://cloud.google.com/storage/docs/json_api/v1/notifications/list
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -496,6 +508,8 @@ class Bucket(_PropertyMixin):
         this will cowardly refuse to delete the objects (or the bucket). This
         is to prevent accidental bucket deletion and to prevent extremely long
         runtime of this method.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type force: bool
         :param force: If True, empties the bucket's objects then deletes it.
@@ -552,6 +566,8 @@ class Bucket(_PropertyMixin):
           :start-after: [START delete_blob]
           :end-before: [END delete_blob]
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type blob_name: str
         :param blob_name: A blob name to delete.
 
@@ -590,6 +606,8 @@ class Bucket(_PropertyMixin):
 
         Uses :meth:`delete_blob` to delete each individual blob.
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type blobs: list
         :param blobs: A list of :class:`~google.cloud.storage.blob.Blob`-s or
                       blob names to delete.
@@ -622,6 +640,8 @@ class Bucket(_PropertyMixin):
     def copy_blob(self, blob, destination_bucket, new_name=None,
                   client=None, preserve_acl=True):
         """Copy the given blob to the given bucket, optionally with a new name.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type blob: :class:`google.cloud.storage.blob.Blob`
         :param blob: The blob to be copied.
@@ -671,6 +691,8 @@ class Bucket(_PropertyMixin):
 
     def rename_blob(self, blob, new_name, client=None):
         """Rename the given blob using copy and delete operations.
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         Effectively, copies blob to the same bucket with a new name, then
         deletes the blob.
@@ -1112,6 +1134,8 @@ class Bucket(_PropertyMixin):
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/getIamPolicy
 
+        If :attr:`user_project` is set, bills the API request to that project.
+
         :type client: :class:`~google.cloud.storage.client.Client` or
                       ``NoneType``
         :param client: Optional. The client to use.  If not passed, falls back
@@ -1139,6 +1163,8 @@ class Bucket(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/setIamPolicy
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type policy: :class:`google.cloud.iam.Policy`
         :param policy: policy instance used to update bucket's IAM policy.
@@ -1173,6 +1199,8 @@ class Bucket(_PropertyMixin):
 
         See
         https://cloud.google.com/storage/docs/json_api/v1/buckets/testIamPermissions
+
+        If :attr:`user_project` is set, bills the API request to that project.
 
         :type permissions: list of string
         :param permissions: the permissions to check
